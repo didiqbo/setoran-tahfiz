@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; connect-src https://equran.id; img-src 'self' data:; base-uri 'none'; form-action 'none'; object-src 'none'">
+<title>🎤 Setoran Tahfiz</title>
+<link href="https://fonts.googleapis.com/css2?family=Amiri&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Poppins',sans-serif;background:linear-gradient(135deg,#0f766e,#064e3b);min-height:100vh;padding:15px}
+.wrap{max-width:900px;margin:auto;background:#fefce8;border-radius:20px;padding:20px;border:4px solid #fbbf24}
+.head{text-align:center;padding:15px 0;border-bottom:3px dashed #fbbf24;margin-bottom:20px}
+.head h1{color:#065f46;font-size:1.6em}
+.head p{color:#047857;font-size:.9em;margin-top:5px}
+.btn{border:none;color:#fff;padding:12px 24px;border-radius:12px;cursor:pointer;font-size:1em;font-weight:600;margin:5px;font-family:inherit}
+.btn-green{background:linear-gradient(135deg,#10b981,#059669)}
+.btn-red{background:linear-gradient(135deg,#ef4444,#dc2626)}
+.btn-orange{background:linear-gradient(135deg,#f59e0b,#d97706)}
+.btn-purple{background:linear-gradient(135deg,#8b5cf6,#6d28d9)}
+.btn:disabled{background:#9ca3af;cursor:not-allowed}
+.screen{display:none}.screen.active{display:block}
+.surah-list{display:grid;gap:10px;max-height:500px;overflow-y:auto}
+.surah-card{background:#fff;border:2px solid #10b981;border-radius:12px;padding:12px;cursor:pointer;display:grid;grid-template-columns:40px 1fr auto;gap:10px;align-items:center}
+.surah-card:hover,.surah-card:focus{background:#d1fae5;outline:2px solid #059669}
+.surah-num{width:40px;height:40px;background:#10b981;color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700}
+.surah-info h3{color:#065f46;font-size:1em}
+.surah-info p{color:#047857;font-size:.8em}
+.surah-arab{font-family:'Amiri',serif;font-size:1.5em;color:#065f46;direction:rtl}
+.banner{background:linear-gradient(135deg,#8b5cf6,#6d28d9);color:#fff;padding:20px;border-radius:15px;text-align:center;margin:20px 0}
+.banner h2{font-size:1.3em;margin-bottom:8px}
+.ref-box{background:#f3f4f6;border-radius:12px;padding:15px;margin:15px 0;max-height:300px;overflow-y:auto}
+.ref-box h3{color:#065f46;margin-bottom:10px}
+.ayat-ref{font-family:'Amiri',serif;font-size:1.2em;direction:rtl;text-align:right;padding:8px;margin:5px 0;background:#fff;border-radius:8px}
+.transcript-box{background:#fff;border:3px solid #8b5cf6;border-radius:15px;padding:20px;margin:20px 0;min-height:150px}
+.transcript-box h3{color:#6d28d9;margin-bottom:10px}
+.transcript{font-family:'Amiri',serif;font-size:1.4em;direction:rtl;text-align:right;line-height:1.8;color:#374151;min-height:80px}
+.status{font-size:.9em;color:#6b7280;margin-top:10px;font-weight:600}
+.start-btn{width:100%;padding:20px;font-size:1.2em;margin:20px 0}
+.hasil{background:#fff;border:3px solid #8b5cf6;border-radius:15px;padding:20px;margin:20px 0}
+.hasil h3{color:#6d28d9;text-align:center;margin-bottom:15px}
+.ayat-result{background:#f9fafb;border-radius:10px;padding:12px;margin:10px 0;border-left:5px solid}
+.ayat-result.ok{border-left-color:#10b981;background:#f0fdf4}
+.ayat-result.mid{border-left-color:#f59e0b;background:#fef3c7}
+.ayat-result.no{border-left-color:#ef4444;background:#fee2e2}
+.ayat-result h4{display:flex;justify-content:space-between;margin-bottom:8px;font-size:.9em}
+.ayat-arab{font-family:'Amiri',serif;font-size:1.3em;direction:rtl;text-align:right;margin:8px 0}
+.sertifikat{background:linear-gradient(135deg,#fef3c7,#fde68a);border:5px double #d97706;border-radius:20px;padding:25px;text-align:center;margin:20px 0}
+.sertifikat h2{color:#92400e;font-size:1.6em;margin:10px 0}
+.sertifikat .surah{font-family:'Amiri',serif;font-size:1.8em;color:#065f46;direction:rtl;margin:10px 0}
+.sertifikat .nilai{font-size:3.5em;font-weight:800;color:#059669;margin:15px 0}
+.sertifikat .stars{font-size:1.8em;margin:10px 0}
+.sertifikat .predikat{color:#065f46;font-weight:700;font-size:1.1em;margin:10px 0}
+.sertifikat .pesan{font-size:.95em;color:#78350f;margin:10px 0;font-style:italic}
+.warn{background:#fef3c7;border-left:5px solid #f59e0b;padding:12px;border-radius:10px;margin:15px 0;font-size:.85em;color:#92400e}
+.privacy-notice{background:#ecfdf5;border-left:4px solid #10b981;padding:10px 12px;border-radius:8px;font-size:.8em;color:#065f46;margin:15px 0;line-height:1.5}
+details{background:#f3f4f6;padding:12px;border-radius:10px;margin:15px 0}
+summary{cursor:pointer;font-weight:600;color:#6d28d9}
+@media(max-width:500px){.head h1{font-size:1.3em}.transcript{font-size:1.1em}.sertifikat .nilai{font-size:2.5em}}
+@media print{
+  .btn,.privacy-notice,#menu,.head p,.banner{display:none !important}
+  body{background:#fff !important;padding:0 !important}
+  .wrap{border:0 !important;padding:0 !important;max-width:100% !important}
+  .screen{display:none !important}
+  #setoran.screen.active{display:block !important}
+  #phase3{display:block !important}
+  .ref-box,.transcript-box{display:none !important}
+  .sertifikat{page-break-inside:avoid}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="head">
+    <h1>🎤 Setoran Tahfiz</h1>
+    <p>Baca satu surah utuh, nilai otomatis</p>
+  </div>
+
+  <div id="menu" class="screen active">
+    <input type="text" id="search" placeholder="🔍 Cari surah..." maxlength="60"
+      style="width:100%;padding:12px;border:3px solid #10b981;border-radius:12px;margin-bottom:15px;font-family:inherit">
+    <div class="surah-list" id="list"></div>
+    <div class="privacy-notice">
+      🔒 <b>Privasi:</b> Audio bacaan diproses oleh Google Speech Recognition untuk transkripsi.
+      Aplikasi ini tidak menyimpan data Anda di server mana pun. Baca di tempat tenang untuk hasil terbaik.
+    </div>
+  </div>
+
+  <div id="setoran" class="screen">
+    <button class="btn btn-orange" id="btn-kembali">← Kembali</button>
+
+    <div id="phase1">
+      <div class="banner">
+        <h2 id="judul">Setoran Tahfiz</h2>
+        <p id="sub">Baca seluruh surah sekaligus</p>
+      </div>
+      <div class="ref-box">
+        <h3>📖 Referensi Ayat</h3>
+        <div id="ref"></div>
+      </div>
+      <button class="btn btn-red start-btn" id="btn-mulai">🎤 Mulai Setoran</button>
+    </div>
+
+    <div id="phase2" style="display:none">
+      <div class="transcript-box">
+        <h3>🎧 Sedang Mendengarkan...</h3>
+        <div class="transcript" id="trans" lang="ar"></div>
+        <div class="status" id="stat">Silakan baca seluruh surah...</div>
+      </div>
+      <button class="btn btn-orange" id="btn-selesai"
+        style="width:100%;padding:15px;font-size:1.1em;margin:15px 0">⏹️ Selesai Baca</button>
+    </div>
+
+    <div id="phase3" style="display:none">
+      <div class="hasil">
+        <h3>📊 Hasil Setoran</h3>
+        <div id="detail"></div>
+      </div>
+      <div id="sert"></div>
+      <button class="btn btn-purple" id="btn-print"
+        style="width:100%;padding:15px;margin:10px 0">🖨️ Cetak Sertifikat</button>
+      <button class="btn btn-green" id="btn-lain"
+        style="width:100%;padding:15px">🎤 Setoran Surah Lain</button>
+    </div>
+  </div>
+</div>
+
+<script>
+'use strict';
+
+/* ============================================================
+   SECURITY: Semua data dinamis dari API ditampilkan via
+   textContent (bukan innerHTML). Angka di-parse & di-range-check.
+   Tidak ada inline event handler. Tidak ada eval/Function.
+   ============================================================ */
+
+// ---------- Helpers ----------
+const $ = id => document.getElementById(id);
+const safeInt = (v, min, max) => {
+  const n = parseInt(v, 10);
+  return Number.isFinite(n) && n >= min && n <= max ? n : null;
+};
+const safeStr = (v, maxLen) => {
+  if (typeof v !== 'string') return '';
+  return v.slice(0, maxLen);
+};
+const el = (tag, cls, txt) => {
+  const e = document.createElement(tag);
+  if (cls) e.className = cls;
+  if (txt != null) e.textContent = txt;
+  return e;
+};
+
+// ---------- State ----------
+let surahs = [];
+let surah = null;
+let ayats = [];
+let rec = null;
+let transcript = '';
+let recording = false;
+let restartTimer = null;
+let pilihSeq = 0;
+
+// ---------- Fetch dengan timeout ----------
+async function fetchJSON(url, timeoutMs = 10000) {
+  const ctrl = new AbortController();
+  const t = setTimeout(() => ctrl.abort(), timeoutMs);
+  try {
+    const r = await fetch(url, {
+      signal: ctrl.signal,
+      credentials: 'omit',
+      referrerPolicy: 'no-referrer',
+      mode: 'cors'
+    });
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    return await r.json();
+  } finally {
+    clearTimeout(t);
+  }
+}
+
+// ---------- Navigasi ----------
+function go(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  const target = $(id);
+  if (target) target.classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+// ---------- Load daftar surah ----------
+async function loadSurahs() {
+  const listEl = $('list');
+  listEl.replaceChildren();
+  const loading = el('div', null, 'Memuat...');
+  loading.style.cssText = 'text-align:center;padding:30px';
+  listEl.appendChild(loading);
+
+  try {
+    const j = await fetchJSON('https://equran.id/api/v2/surat');
+    if (!j || !Array.isArray(j.data)) throw new Error('Format API tidak valid');
+
+    surahs = j.data
+      .filter(s => s && typeof s === 'object')
+      .map(s => ({
+        nomor: safeInt(s.nomor, 1, 114),
+        namaLatin: safeStr(s.namaLatin, 100),
+        arti: safeStr(s.arti, 200),
+        jumlahAyat: safeInt(s.jumlahAyat, 1, 300),
+        nama: safeStr(s.nama, 100)
+      }))
+      .filter(s => s.nomor !== null && s.namaLatin.length > 0);
+
+    renderList();
+  } catch (e) {
+    listEl.replaceChildren();
+    const err = el('div', null, 'Gagal memuat: ' + (e.message || 'Periksa koneksi Anda.'));
+    err.style.cssText = 'color:#ef4444;text-align:center;padding:20px';
+    listEl.appendChild(err);
+  }
+}
+
+// ---------- Render daftar (pure DOM, zero innerHTML) ----------
+function renderList() {
+  const q = safeStr($('search').value, 60).toLowerCase().trim();
+  const filtered = surahs.filter(s =>
+    s.namaLatin.toLowerCase().includes(q) || String(s.nomor).includes(q)
+  );
+  const listEl = $('list');
+  listEl.replaceChildren();
+
+  if (filtered.length === 0) {
+    const empty = el('div', null, 'Tidak ada surah ditemukan');
+    empty.style.cssText = 'text-align:center;padding:20px;color:#6b7280';
+    listEl.appendChild(empty);
+    return;
+  }
+
+  const frag = document.createDocumentFragment();
+  for (const s of filtered) {
+    const card = el('div', 'surah-card');
+    card.setAttribute('role', 'button');
+    card.setAttribute('tabindex', '0');
+    card.dataset.no = String(s.nomor);
+
+    const num = el('div', 'surah-num', String(s.nomor));
+
+    const info = el('div', 'surah-info');
+    info.appendChild(el('h3', null, s.namaLatin));
+    info.appendChild(el('p', null, s.arti + ' • ' + s.jumlahAyat + ' ayat'));
+
+    const arab = el('div', 'surah-arab', s.nama);
+    arab.setAttribute('lang', 'ar');
+
+    card.append(num, info, arab);
+    card.addEventListener('click', () => pilih(s.nomor));
+    card.addEventListener('keydown', ev => {
+      if (ev.key === 'Enter' || ev.key === ' ') {
+        ev.preventDefault();
+        pilih(s.nomor);
+      }
+    });
+    frag.appendChild(card);
+  }
+  listEl.appendChild(frag);
+}
+
+// ---------- Pilih surah ----------
+async function pilih(no) {
+  const n = safeInt(no, 1, 114);
+  if (n === null) return;
+
+  const seq = ++pilihSeq;
+
+  try {
+    const j = await fetchJSON('https://equran.id/api/v2/surat/' + n);
+    if (seq !== pilihSeq) return; // respons usang, abaikan
+    if (!j || !j.data || !Array.isArray(j.data.ayat)) throw new Error('Format API tidak valid');
+
+    const raw = j.data;
+    surah = {
+      namaLatin: safeStr(raw.namaLatin, 100),
+      nama: safeStr(raw.nama, 100),
+      jumlahAyat: safeInt(raw.jumlahAyat, 1, 300) || 0
+    };
+
+    ayats = raw.ayat
+      .filter(a => a && typeof a.teksArab === 'string')
+      .map(a => ({
+        nomorAyat: safeInt(a.nomorAyat, 1, 300) || 0,
+        teksArab: safeStr(a.teksArab, 2000)
+      }))
+      .filter(a => a.nomorAyat > 0 && a.teksArab.length > 0);
+
+    if (ayats.length === 0) throw new Error('Tidak ada ayat valid');
+
+    $('judul').textContent = surah.namaLatin;
+    $('sub').textContent = surah.jumlahAyat + ' ayat';
+
+    const refEl = $('ref');
+    refEl.replaceChildren();
+    const refFrag = document.createDocumentFragment();
+    for (const a of ayats) {
+      const d = el('div', 'ayat-ref', a.teksArab);
+      d.setAttribute('lang', 'ar');
+      refFrag.appendChild(d);
+    }
+    refEl.appendChild(refFrag);
+
+    $('phase1').style.display = 'block';
+    $('phase2').style.display = 'none';
+    $('phase3').style.display = 'none';
+    go('setoran');
+  } catch (e) {
+    if (seq !== pilihSeq) return;
+    alert('Gagal memuat surah: ' + (e.message || 'Unknown error'));
+  }
+}
+
+// ---------- Mulai rekam ----------
+function mulai() {
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SR) {
+    alert('Browser tidak support. Gunakan Chrome atau Edge terbaru.');
+    return;
+  }
+
+  $('phase1').style.display = 'none';
+  $('phase2').style.display = 'block';
+  $('trans').textContent = '';
+  $('stat').textContent = '🎙️ Silakan baca...';
+
+  transcript = '';
+  rec = new SR();
+  rec.lang = 'ar-SA';
+  rec.continuous = true;
+  rec.interimResults = true;
+  rec.maxAlternatives = 1;
+
+  rec.onresult = e => {
+    let interim = '';
+    for (let i = e.resultIndex; i < e.results.length; i++) {
+      const alt = e.results[i] && e.results[i][0];
+      const txt = alt && alt.transcript;
+      if (typeof txt !== 'string') continue;
+      if (e.results[i].isFinal) transcript += txt + ' ';
+      else interim += txt;
+    }
+    $('trans').textContent = transcript + interim;
+  };
+
+  rec.onerror = e => {
+    if (e.error === 'not-allowed' || e.error === 'service-not-allowed') {
+      $('stat').textContent = '❌ Izin mikrofon ditolak.';
+      recording = false;
+      try { rec.stop(); } catch (_) {}
+    }
+  };
+
+  rec.onend = () => {
+    if (!recording) return;
+    if (restartTimer) clearTimeout(restartTimer);
+    restartTimer = setTimeout(() => {
+      if (!recording) return;
+      try { rec.start(); } catch (_) {}
+    }, 300);
+  };
+
+  recording = true;
+  try {
+    rec.start();
+  } catch (_) {
+    recording = false;
+    alert('Gagal memulai mikrofon.');
+  }
+}
+
+// ---------- Selesai ----------
+function selesai() {
+  recording = false;
+  if (restartTimer) { clearTimeout(restartTimer); restartTimer = null; }
+  try { if (rec) rec.stop(); } catch (_) {}
+
+  $('phase2').style.display = 'none';
+  $('phase3').style.display = 'block';
+  $('detail').replaceChildren();
+  $('sert').replaceChildren();
+
+  if (!transcript.trim()) {
+    $('detail').appendChild(el('div', 'warn', 'Tidak terdengar bacaan. Coba lagi dengan mikrofon lebih dekat.'));
+    return;
+  }
+
+  proses();
+}
+
+// ---------- Skor: karakter-level LCS ----------
+function hitung(target, trans) {
+  const norm = t => String(t || '')
+    .replace(/[\u064B-\u065F\u0670\u06D6-\u06ED\u0640]/g, '')
+    .replace(/[إأآٱا]/g, 'ا')
+    .replace(/ى/g, 'ي')
+    .replace(/ؤ/g, 'و')
+    .replace(/ئ/g, 'ي')
+    .replace(/ة/g, 'ه')
+    .replace(/[^\u0600-\u06FF\s]/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+
+  const A = norm(target).slice(0, 1500);
+  const B = norm(trans).slice(0, 15000);
+  if (!A || !B) return 0;
+
+  const n = A.length, m = B.length;
+  const dp = Array.from({ length: n + 1 }, () => new Uint16Array(m + 1));
+  for (let i = 1; i <= n; i++) {
+    for (let j = 1; j <= m; j++) {
+      dp[i][j] = A.charCodeAt(i - 1) === B.charCodeAt(j - 1)
+        ? dp[i - 1][j - 1] + 1
+        : Math.max(dp[i - 1][j], dp[i][j - 1]);
+    }
+  }
+  return Math.min(100, Math.round((dp[n][m] / n) * 100));
+}
+
+// ---------- Proses hasil ----------
+function proses() {
+  const results = ayats.map(a => ({
+    no: a.nomorAyat,
+    teks: a.teksArab,
+    score: hitung(a.teksArab, transcript)
+  }));
+
+  const total = results.reduce((s, r) => s + r.score, 0);
+  const avg = Math.round(total / results.length);
+
+  // === Detail ===
+  const detailEl = $('detail');
+  detailEl.replaceChildren();
+
+  // Transkrip (transparansi)
+  const details = document.createElement('details');
+  details.appendChild(el('summary', null, '📝 Lihat Transkrip yang Terdeteksi'));
+  const transDiv = el('div', 'transcript', transcript);
+  transDiv.setAttribute('lang', 'ar');
+  transDiv.style.marginTop = '10px';
+  details.appendChild(transDiv);
+  detailEl.appendChild(details);
+
+  // Per ayat
+  const frag = document.createDocumentFragment();
+  for (const r of results) {
+    const cls = r.score >= 85 ? 'ok' : r.score >= 55 ? 'mid' : 'no';
+    const label = r.score >= 85 ? '✅ Sesuai' : r.score >= 55 ? '🟡 Hampir' : '❌ Kurang';
+
+    const box = el('div', 'ayat-result ' + cls);
+    const h4 = document.createElement('h4');
+    h4.appendChild(el('span', null, 'Ayat ' + r.no));
+    h4.appendChild(el('span', null, r.score + '% - ' + label));
+
+    const arab = el('div', 'ayat-arab', r.teks);
+    arab.setAttribute('lang', 'ar');
+
+    box.append(h4, arab);
+    frag.appendChild(box);
+  }
+  detailEl.appendChild(frag);
+
+  // === Sertifikat ===
+  const stars = avg >= 85 ? '⭐⭐⭐⭐⭐' : avg >= 70 ? '⭐⭐⭐⭐' : avg >= 50 ? '⭐⭐⭐' : avg >= 30 ? '⭐⭐' : '⭐';
+  const pred = avg >= 85 ? 'MUMTAZ' : avg >= 70 ? 'JAYYID JIDDAN' : avg >= 55 ? 'JAYYID' : avg >= 40 ? 'MAQBUL' : 'PERLU LATIHAN';
+  const pesan = avg >= 85 ? 'Masya Allah, lancar! 🎉' : avg >= 70 ? 'Alhamdulillah, bagus! 👍' : avg >= 55 ? 'Terus berlatih! 💪' : 'Semangat! 🌟';
+
+  const sertEl = $('sert');
+  sertEl.replaceChildren();
+
+  const cert = el('div', 'sertifikat');
+  cert.appendChild(el('h2', null, 'SERTIFIKAT SETORAN'));
+  const surahDiv = el('div', 'surah', surah.nama);
+  surahDiv.setAttribute('lang', 'ar');
+  cert.appendChild(surahDiv);
+  cert.appendChild(el('div', 'nilai', avg + '%'));
+  cert.appendChild(el('div', 'stars', stars));
+  cert.appendChild(el('div', 'predikat', pred));
+  cert.appendChild(el('div', 'pesan', pesan));
+  sertEl.appendChild(cert);
+}
+
+// ---------- Event wiring (tanpa inline handler) ----------
+$('search').addEventListener('input', renderList);
+$('btn-mulai').addEventListener('click', mulai);
+$('btn-selesai').addEventListener('click', selesai);
+$('btn-kembali').addEventListener('click', () => go('menu'));
+$('btn-print').addEventListener('click', () => window.print());
+$('btn-lain').addEventListener('click', () => go('menu'));
+
+// Boot
+loadSurahs();
+</script>
+</body>
+</html>
